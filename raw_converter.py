@@ -1,6 +1,7 @@
 import argparse
 import os
 
+from log_utils import RawFiles, exit_with_error
 from str_utils import *
 import ntpath
 
@@ -28,32 +29,50 @@ class image:
         self.file_path = file_name
         self.file_name = os.path.splitext(ntpath.basename(self.file_path))[0]
         self.is_thumb = thumb
-        self.img, self.raw = image_transfer.load(file_name, self.is_thumb)
+        if thumb:
+            self.img = image_transfer.load_thumb(file_name)
+        else:
+            self.img, self.raw = image_transfer.load(file_name)
         self.dir_name = ntpath.dirname(self.file_path)
         pass
 
     def save(self, file_name="", res_dir="", out_format=".jpeg"):
-        image_transfer.save(self.img,
-                            res_dir if res_dir else self.dir_name,
-                            out_format,
-                            file_name if file_name else self.file_name)
+        if self.is_thumb:
+            image_transfer.save_thumb(self.img,
+                                      res_dir if res_dir else self.dir_name,
+                                      out_format,
+                                      file_name if file_name else self.file_name)
+        else:
+            image_transfer.save(self.img,
+                                res_dir if res_dir else self.dir_name,
+                                out_format,
+                                file_name if file_name else self.file_name)
 
     def close(self):
-        image_transfer.close(self.raw)
+        RawFiles.close_file(self.file_path)
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('files', help='List of files you want to convert', type=str, nargs='*')
-parser.add_argument('--out_type', help='Output type of image', type=str)
-parser.add_argument('--res_dir', help='Output directory', type=str)
-parser.add_argument('--get_thumb', help='Get only thumbnails of photos.')
+parser.add_argument('files', help='List of files you want to convert',
+                    type=str, nargs='*')
+parser.add_argument('--out_type', help='Output type of image', default='jpeg',
+                    type=str)
+parser.add_argument('--res_dir', default=None, help='Output directory',
+                    type=str)
+parser.add_argument('--get_thumb', default=False, action='store_true',
+                    help='Get only thumbnails of photos.')
 args = parser.parse_args()
 
 # Command line arguments
 list_files = args.files
-res_dir = args.res_dir if args.res_dir else None
-out_type = ".{}".format(args.out_type) if args.out_type else None
-load_thumb = args.get_thumb if args.get_thumb else None
+res_dir = args.res_dir
+out_type = ".{}".format(args.out_type)
+load_thumb = args.get_thumb
+
+# Check if result directory is exists
+if res_dir and not os.path.exists(res_dir):
+    exit_with_error("Directory {} doesn't exists or unable to write"
+                    .format(res_dir))
 
 # Parse Unix style filenames(like *)
 res_files = []
@@ -71,5 +90,8 @@ for file in res_files:
         im = image(file, True)
     else:
         im = image(file)
-    im.save(out_format=out_type if out_type else ".jpeg")
+    if res_dir:
+        im.save(out_format=out_type, res_dir=res_dir)
+    else:
+        im.save(out_format=out_type)
     im.close()
