@@ -17,9 +17,19 @@ class image_transfer:
         imageio.imsave(path, img)
 
     @staticmethod
-    def load(file_name):
+    def load(file_name, load_thumb=False):
         try:
             raw = rawpy.imread(file_name)
+            # if load_thumb:
+            #     try:
+            #         thumb = raw.extract_thumb()
+            #     except rawpy.LibRawNoThumbnailError:
+            #         exit_with_error('{} file has no thumbnail'.format(file_name))
+            #     except rawpy.LibRawUnsupportedThumbnailError:
+            #         exit_with_error("{} file has unsupported thumbnail".format(file_name))
+            #     else:
+            #         pass
+
         except LibRawNonFatalError as e:
             exit_with_error("{} isn't raw file or damaged".format(file_name))
 

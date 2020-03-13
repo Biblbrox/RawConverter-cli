@@ -7,7 +7,8 @@ import ntpath
 from img_transfer import image_transfer
 
 """
-Supported optional arguments is [out_type, res_dir]
+Supported optional arguments is [out_type, res_dir, get_thumb]
+Default format to saving images is jpeg
 """
 
 
@@ -23,10 +24,11 @@ class raw_converter:
 
 
 class image:
-    def __init__(self, file_name):
+    def __init__(self, file_name, thumb=False):
         self.file_path = file_name
         self.file_name = os.path.splitext(ntpath.basename(self.file_path))[0]
-        self.img, self.raw = image_transfer.load(file_name)
+        self.is_thumb = thumb
+        self.img, self.raw = image_transfer.load(file_name, self.is_thumb)
         self.dir_name = ntpath.dirname(self.file_path)
         pass
 
@@ -44,12 +46,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('files', help='List of files you want to convert', type=str, nargs='*')
 parser.add_argument('--out_type', help='Output type of image', type=str)
 parser.add_argument('--res_dir', help='Output directory', type=str)
+parser.add_argument('--get_thumb', help='Get only thumbnails of photos.')
 args = parser.parse_args()
 
 # Command line arguments
 list_files = args.files
 res_dir = args.res_dir if args.res_dir else None
 out_type = ".{}".format(args.out_type) if args.out_type else None
+load_thumb = args.get_thumb if args.get_thumb else None
 
 # Parse Unix style filenames(like *)
 res_files = []
@@ -63,6 +67,9 @@ for file in list_files:
 res_files = [file for sublist in res_files for file in sublist]
 converter = raw_converter()
 for file in res_files:
-    im = image(file)
+    if load_thumb:
+        im = image(file, True)
+    else:
+        im = image(file)
     im.save(out_format=out_type if out_type else ".jpeg")
     im.close()
