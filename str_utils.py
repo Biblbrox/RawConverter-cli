@@ -27,12 +27,10 @@ def get_files(dir_name):
     """
     if not os.path.exists(dir_name):
         raise FileNotFoundError(
-            "Directory {} not found or not granted permission".format(
-                dir_name))
+            f"Directory {dir_name} not found or not granted permission")
     return [file for file in os.listdir(dir_name) if os.path.isfile(file)]
 
 
 __all__ = [
     "get_files", "parse_path"
 ]
-

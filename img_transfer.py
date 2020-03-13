@@ -13,13 +13,13 @@ class image_transfer:
 
     @staticmethod
     def save(img, res_dir, out_format, file_name):
-        path = os.path.join(res_dir, "{}{}".format(file_name, out_format))
+        path = os.path.join(res_dir, f"{file_name}{out_format}")
 
         imageio.imsave(path, img)
 
     @staticmethod
     def save_thumb(thumb, res_dir, out_format, file_name):
-        path = os.path.join(res_dir, "{}{}".format(file_name, out_format))
+        path = os.path.join(res_dir, f"{file_name}{out_format}")
 
         with open(path, 'wb') as f:
             f.write(thumb.data)
@@ -30,11 +30,11 @@ class image_transfer:
             raw = RawFiles.read_file(file_name)
             thumb = raw.extract_thumb()
         except rawpy.LibRawNoThumbnailError:
-            exit_with_error("File {} has no thumbnail".format(file_name))
+            exit_with_error(f"File {file_name} has no thumbnail")
         except rawpy.LibRawUnsupportedThumbnailError:
-            exit_with_error("File {} has no supported thumbnail".format(file_name))
+            exit_with_error(f"File {file_name} has no supported thumbnail")
         except rawpy.LibRawNonFatalError:
-            exit_with_error("File {} isn't raw file or damaged".format(file_name))
+            exit_with_error(f"File {file_name} isn't raw file or damaged")
 
         return thumb
 
@@ -42,8 +42,8 @@ class image_transfer:
     def load(file_name):
         try:
             raw = RawFiles.read_file(file_name)
-        except LibRawNonFatalError as e:
-            exit_with_error("File {} isn't raw file or damaged".format(file_name))
+        except LibRawNonFatalError:
+            exit_with_error(f"File {file_name} isn't raw file or damaged")
 
         img = raw.postprocess(gamma=(1, 1), output_bps=16,
                               use_camera_wb=True)
