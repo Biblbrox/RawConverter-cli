@@ -13,6 +13,12 @@ setuptools.setup(
     url="https://github.com/Biblbrox/RawConverter",
     packages=["RawProc"],
     scripts=['./scripts/rawproc'],
+    depency_links=["https://github.com/letmaik/rawpy"],
+    install_requires=[
+        'numpy',
+        'cython',
+        'imageo'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU GPLv3 License",
