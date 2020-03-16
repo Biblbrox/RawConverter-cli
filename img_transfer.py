@@ -1,5 +1,4 @@
 import os
-
 import imageio
 import rawpy
 from rawpy._rawpy import LibRawNonFatalError
@@ -33,12 +32,12 @@ class ImageTransfer:
         :return: rawpy.Thumbnail
         :raise rawpy.LibRawNoThumbnailError,
         rawpy.LibRawUnsupportedThumbnailError,
-        rawpy,LibRawNonFatalError
+        rawpy,LibRawNonFatalErrors
         """
         try:
             raw = RawFiles.read_file(file_name)
             thumb = raw.extract_thumb()
-        except rawpy.LibRawNoThumbnailError:
+        except LibRawNoThumbnailError:
             exit_with_error(f"File {file_name} has no thumbnail")
         except rawpy.LibRawUnsupportedThumbnailError:
             exit_with_error(f"File {file_name} has no supported thumbnail")

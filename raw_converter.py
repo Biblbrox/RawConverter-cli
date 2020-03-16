@@ -20,7 +20,7 @@ args = {
     },
     "--out-type": {
         "help": 'Output type of image',
-        "default": 'jpeg',
+        "default": '.jpeg',
         "type": str
     },
     "--res-dir": {
@@ -76,7 +76,6 @@ args = parser.parse_args()
 
 # Command line arguments
 args = vars(args)
-
 # Check if result directory is exists
 if args['res_dir'] and not os.path.exists(args['res_dir']):
     exit_with_error(f"Directory {args['res_dir']} does't exists "
@@ -92,7 +91,7 @@ for file in args['files']:
 
 res_files = [file for sublist in res_files for file in sublist]
 for file in res_files:
-    im = Image(file, True) if args['load_thumb'] else Image(file)
+    im = Image(file, True) if args['get_thumb'] else Image(file)
 
     im.save(out_format=args['out_type'], res_dir=args['res_dir'])
     im.close()
