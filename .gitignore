@@ -1,1 +1,6 @@
 .gdb_history
+dist
+RawProc.egg-info
+share
+.idea
+build
