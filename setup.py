@@ -17,7 +17,7 @@ setuptools.setup(
     install_requires=[
         'numpy',
         'cython',
-        'imageo'
+        'imageio'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
