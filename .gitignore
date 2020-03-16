@@ -4,3 +4,6 @@ RawProc.egg-info
 share
 .idea
 build
+bin
+lib
+lib64
