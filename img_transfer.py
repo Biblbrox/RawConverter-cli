@@ -7,9 +7,10 @@ from rawpy._rawpy import LibRawNonFatalError
 from log_utils import exit_with_error, RawFiles
 
 
-class image_transfer:
-    def __init__(self):
-        pass
+class ImageTransfer:
+    """
+    Performs all operations with image files
+    """
 
     @staticmethod
     def save(img, res_dir, out_format, file_name):
@@ -26,6 +27,14 @@ class image_transfer:
 
     @staticmethod
     def load_thumb(file_name):
+        """
+        Gets thumbnail from raw file if it exists.
+        :param file_name:
+        :return: rawpy.Thumbnail
+        :raise rawpy.LibRawNoThumbnailError,
+        rawpy.LibRawUnsupportedThumbnailError,
+        rawpy,LibRawNonFatalError
+        """
         try:
             raw = RawFiles.read_file(file_name)
             thumb = raw.extract_thumb()
@@ -40,6 +49,11 @@ class image_transfer:
 
     @staticmethod
     def load(file_name):
+        """
+        Load raw file and postprocessed image from it.
+        :param file_name:
+        :return: [ndarray, RawPy]
+        """
         try:
             raw = RawFiles.read_file(file_name)
         except LibRawNonFatalError:

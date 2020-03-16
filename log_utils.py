@@ -2,17 +2,31 @@ import rawpy
 
 
 def exit_with_error(msg):
+    """
+    Print msg to stderr and
+    exit with non-zero return code.
+    Before exit close all opened files
+    :param msg:
+    """
     RawFiles.close_files()
     exit(msg)
 
 
 def exit_suc(msg):
+    """
+    Print msg to stdout and
+    exit with zero return code
+    :param msg:
+    """
     print(msg)
     RawFiles.close_files()
-    exit(1)
+    exit(0)
 
 
 class RawFiles:
+    """
+    Class to keep all open files in app.
+    """
     files = {}
 
     @classmethod
