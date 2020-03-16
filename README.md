@@ -13,3 +13,8 @@ python3 raw_converter.py /home/user/photo/some_img.CR2 --res-dir /home/user/fina
 ```
 
 By default --out-type is .jpeg and --res-dir is same dir with input file
+
+## Installation
+```
+pip3 install rawproc
+```
