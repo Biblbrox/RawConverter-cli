@@ -12,6 +12,7 @@ setuptools.setup(
     long_description=long_description,
     url="https://github.com/Biblbrox/RawConverter",
     packages=["RawProc"],
+    download_url="https://github.com/Biblbrox/RawConverter/archive/0.0.1.tar.gz",
     scripts=['./scripts/rawproc'],
     depency_links=["https://github.com/letmaik/rawpy"],
     install_requires=[
