@@ -12,6 +12,7 @@ Supported arguments
 Default image extension is jpeg
 """
 
+
 class Image:
     """
     Image class.
