@@ -15,6 +15,6 @@ rawproc /home/user/photo/some_img.CR2 --res-dir /home/user/final_photo --get-thu
 By default --out-type is .jpeg and --res-dir is same dir with input file
 
 ## Installation
-```
+```bash
 pip3 install rawproc
 ```
